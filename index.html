@@ -80,7 +80,7 @@ document.getElementById("surveyForm").addEventListener("submit", async (e) => {
   const data = { nama, rating: selectedRating, ulasan };
   
   // Ganti URL berikut dengan URL Web App kamu dari Google Apps Script
-  const scriptURL = "PASTE_URL_WEB_APP_KAMU_DISINI";
+  const scriptURL = "https://script.google.com/macros/s/AKfycby45_craZxCWUx2zp62vVOPBRtnaTveFCCJJ_QljHEZnqVVaJ_AdyDXPrpfDydKJT21-w/exec";
   
   const res = await fetch(scriptURL, {
     method: "POST",
