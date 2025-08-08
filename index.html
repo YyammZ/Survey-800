@@ -1,99 +1,146 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Axioo Care Platinum 800 - Survey</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #e0eafc, #cfdef3);
-  display: flex; justify-content: center; align-items: center;
-  height: 100vh; margin: 0;
-}
-.container {
-  background: white; padding: 25px; border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1); width: 350px; text-align: center;
-  animation: popUp 0.5s ease-in-out;
-}
-h1 { color: #4A90E2; }
-input, textarea {
-  width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #ccc;
-}
-.stars span {
-  font-size: 30px; cursor: pointer; color: #ccc; transition: color 0.3s;
-}
-.stars span.active, .stars span:hover, .stars span:hover ~ span { color: gold; }
-.btn-submit {
-  background: #4A90E2; color: white; padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer;
-  transition: 0.3s;
-}
-.btn-submit:hover { background: #357ABD; }
-.hidden { display: none; }
-@keyframes popUp {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Axioo Care Platinum 800 - Survey</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+      animation: popUp 0.5s ease-in-out;
+    }
+    h1 { color: #4A90E2; }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .stars span {
+      font-size: 30px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.3s;
+      display: inline-block;
+    }
+    .stars span.active,
+    .stars span:hover,
+    .stars span:hover ~ span {
+      color: gold;
+    }
+    .btn-submit {
+      background: #4A90E2;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-submit:hover { background: #357ABD; }
+    .hidden { display: none; }
+
+    @keyframes popUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Animasi klik bintang */
+    @keyframes popStar {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    .stars span.animate {
+      animation: popStar 0.3s ease;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <h1>Axioo Care Platinum 800</h1>
-  <p>Beri penilaian layanan kami</p>
-  <form id="surveyForm">
-    <input type="text" name="nama" placeholder="Masukkan nama" required>
-    <div class="stars" id="starRating">
-      <span data-value="1">★</span>
-      <span data-value="2">★</span>
-      <span data-value="3">★</span>
-      <span data-value="4">★</span>
-      <span data-value="5">★</span>
-    </div>
-    <textarea name="ulasan" placeholder="(opsional)Tulis ulasan..."></textarea>
-    <button type="submit" class="btn-submit">Kirim</button>
-  </form>
-  <div id="successMessage" class="hidden">✅ Terima kasih, survey Anda telah terkirim!</div>
-</div>
+  <div class="container">
+    <h1>Axioo Care Platinum 800</h1>
+    <p>Beri penilaian layanan kami</p>
+    <form id="surveyForm">
+      <input type="text" name="nama" placeholder="Masukkan nama" required>
+      <div class="stars" id="starRating">
+        <span data-value="1">★</span>
+        <span data-value="2">★</span>
+        <span data-value="3">★</span>
+        <span data-value="4">★</span>
+        <span data-value="5">★</span>
+      </div>
+      <textarea name="ulasan" placeholder="(opsional) Tulis ulasan..."></textarea>
+      <button type="submit" class="btn-submit">Kirim</button>
+    </form>
+    <div id="successMessage" class="hidden">✅ Terima kasih, survey Anda telah terkirim!</div>
+  </div>
 
-<script>
-let selectedRating = 0;
-const stars = document.querySelectorAll("#starRating span");
-stars.forEach(star => {
-  star.addEventListener("click", () => {
-    selectedRating = star.getAttribute("data-value");
-    stars.forEach(s => s.classList.remove("active"));
-    for (let i = 0; i < selectedRating; i++) {
-      stars[i].classList.add("active");
-    }
-  });
-});
+  <script>
+    let selectedRating = 0;
+    const stars = document.querySelectorAll("#starRating span");
 
-document.getElementById("surveyForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const nama = e.target.nama.value.trim();
-  const ulasan = e.target.ulasan.value.trim();
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        selectedRating = star.getAttribute("data-value");
 
-  if (!selectedRating) {
-    alert("Silakan pilih bintang!");
-    return;
-  }
+        // Reset semua bintang
+        stars.forEach(s => {
+          s.classList.remove("active", "animate");
+        });
 
-  const data = { nama, rating: selectedRating, ulasan };
-  
-  // Ganti URL berikut dengan URL Web App kamu dari Google Apps Script
-  const scriptURL = "https://script.google.com/macros/s/AKfycby45_craZxCWUx2zp62vVOPBRtnaTveFCCJJ_QljHEZnqVVaJ_AdyDXPrpfDydKJT21-w/exec";
-  
-  const res = await fetch(scriptURL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+        // Tambahkan class active dan animasi ke bintang yang dipilih
+        for (let i = 0; i < selectedRating; i++) {
+          stars[i].classList.add("active");
 
-  document.getElementById("successMessage").classList.remove("hidden");
-  e.target.reset();
-  stars.forEach(s => s.classList.remove("active"));
-  selectedRating = 0;
-});
-</script>
+          // Trigger ulang animasi
+          void stars[i].offsetWidth; // force reflow
+          stars[i].classList.add("animate");
+        }
+      });
+    });
+
+    document.getElementById("surveyForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nama = e.target.nama.value.trim();
+      const ulasan = e.target.ulasan.value.trim();
+
+      if (!selectedRating) {
+        alert("Silakan pilih bintang!");
+        return;
+      }
+
+      const data = { nama, rating: selectedRating, ulasan };
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycby45_craZxCWUx2zp62vVOPBRtnaTveFCCJJ_QljHEZnqVVaJ_AdyDXPrpfDydKJT21-w/exec";
+
+      // Ganti 'no-cors' menjadi 'cors' jika ingin melihat response / debugging
+      await fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById("successMessage").classList.remove("hidden");
+      e.target.reset();
+      stars.forEach(s => s.classList.remove("active", "animate"));
+      selectedRating = 0;
+    });
+  </script>
 </body>
 </html>
