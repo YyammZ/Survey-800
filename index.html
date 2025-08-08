@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Axioo Care Platinum 800 - Survey</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="fade-in">Axioo Care Platinum 800</h1>
+    <p class="fade-in delay-1">Beri penilaian layanan kami</p>
+
+    <form id="surveyForm" class="fade-in delay-2">
+      <label>Nama:</label>
+      <input type="text" name="nama" placeholder="Masukkan nama" required>
+
+      <label>Rating:</label>
+      <div class="stars" id="starRating">
+        <span data-value="1">★</span>
+        <span data-value="2">★</span>
+        <span data-value="3">★</span>
+        <span data-value="4">★</span>
+        <span data-value="5">★</span>
+      </div>
+
+      <label>Ulasan (opsional):</label>
+      <textarea name="ulasan" placeholder="Tulis ulasan..."></textarea>
+
+      <button type="submit" class="btn-submit">Kirim</button>
+    </form>
+
+    <div id="successMessage" class="fade-in hidden">✅ Terima kasih, survey Anda telah terkirim!</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
