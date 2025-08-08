@@ -13,6 +13,7 @@
       height: 100vh;
       margin: 0;
     }
+
     .container {
       background: white;
       padding: 25px;
@@ -22,7 +23,9 @@
       text-align: center;
       animation: popUp 0.5s ease-in-out;
     }
+
     h1 { color: #4A90E2; }
+
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -30,6 +33,14 @@
       border-radius: 8px;
       border: 1px solid #ccc;
     }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
     .stars span {
       font-size: 30px;
       cursor: pointer;
@@ -37,11 +48,11 @@
       transition: color 0.3s;
       display: inline-block;
     }
-    .stars span.active,
-    .stars span:hover,
-    .stars span:hover ~ span {
+
+    .stars span.active {
       color: gold;
     }
+
     .btn-submit {
       background: #4A90E2;
       color: white;
@@ -51,6 +62,7 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .btn-submit:hover { background: #357ABD; }
     .hidden { display: none; }
 
@@ -96,21 +108,18 @@
 
     stars.forEach(star => {
       star.addEventListener("click", () => {
-        selectedRating = star.getAttribute("data-value");
+        selectedRating = parseInt(star.getAttribute("data-value"));
 
         // Reset semua bintang
-        stars.forEach(s => {
+        stars.forEach((s, i) => {
           s.classList.remove("active", "animate");
+          if (i < selectedRating) {
+            // Tambahkan class active dan animasi
+            s.classList.add("active");
+            void s.offsetWidth; // trigger ulang animasi
+            s.classList.add("animate");
+          }
         });
-
-        // Tambahkan class active dan animasi ke bintang yang dipilih
-        for (let i = 0; i < selectedRating; i++) {
-          stars[i].classList.add("active");
-
-          // Trigger ulang animasi
-          void stars[i].offsetWidth; // force reflow
-          stars[i].classList.add("animate");
-        }
       });
     });
 
@@ -128,7 +137,6 @@
 
       const scriptURL = "https://script.google.com/macros/s/AKfycby45_craZxCWUx2zp62vVOPBRtnaTveFCCJJ_QljHEZnqVVaJ_AdyDXPrpfDydKJT21-w/exec";
 
-      // Ganti 'no-cors' menjadi 'cors' jika ingin melihat response / debugging
       await fetch(scriptURL, {
         method: "POST",
         mode: "no-cors",
@@ -138,6 +146,8 @@
 
       document.getElementById("successMessage").classList.remove("hidden");
       e.target.reset();
+
+      // Reset bintang
       stars.forEach(s => s.classList.remove("active", "animate"));
       selectedRating = 0;
     });
